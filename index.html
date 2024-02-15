@@ -9,49 +9,44 @@ Also, please do not try to hide the unlink button to "trap" the user in your ser
 Feel free to customize CSS/styling though! Pretty nice, we don't nickel and dime you over trivial features such as design :)
 READ HERE how to fully customize the messages shown to your members https://github.com/VaultCord/vaultcord.github.io/#verified-message
 -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Verify for Discord</title>
     <meta name="robots" content="noindex, nofollow">
-    <link id="favicon" rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" />
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
+    <link rel="preload" href="./src/green_circle_checkmark.svg" as="image">
+    <link rel="preload" href="./src/red_circle_checkmark.svg" as="image">
+    <link rel="preload" href="./src/output.min.css" as="style">
+    <link rel="preload" href="./src/jquery.min.js" as="script">
+    <link id="favicon" rel="shortcut icon" href="./src/green_circle_checkmark.svg">
+    <link rel="stylesheet" href="./src/output.min.css">
+    <script src="./src/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.vaultcord.com/verify-1-0.js"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script>
         $(document).ready(function () {
-
             document.title = `VaultCord.com verify for ${window.location.hostname}`;
             new MutationObserver(function () {
                 $("[data-loader]").fadeOut(function () {
                     if (!$('#failureCross').is('[hidden]')) {
-                        $("#favicon").attr("href","https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg");
+                        $("#favicon").attr("href", "./src/red_circle_checkmark.svg");
                         $("#failureCross").fadeIn();
                     } else if (!$('#successCheck').is('[hidden]')) {
                         $("#pendingIcon").fadeOut(function () {
                             $("#successCheck").fadeIn();
-                            $("#serverUnlinkBtn").addClass("mt-10");
-                            $("#serverUnlinkBtn").fadeIn();
+                            $("#serverUnlinkBtn").addClass("mt-10").fadeIn();
                         });
-                    } else if (!$('#pendingIcon').is('[hidden]')) {} else {
+                    } else if (!$('#pendingIcon').is('[hidden]')) { } else {
                         $("#pendingIcon").fadeOut(function () {
-					        $("#serverVerifyBtn").fadeIn();
-                            $("#serverUnlinkBtn").fadeIn();
+                            $("#serverVerifyBtn, #serverUnlinkBtn").fadeIn();
                         });
-					}
+                    }
                 });
             }).observe($("#serverTitle")[0], { childList: true, characterData: true, subtree: true });
         });
-    </script>
 
-
-    <script type="text/javascript" src="https://cdn.vaultcord.com/verify-1-0.js"></script>
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <script src="https://cdn.tailwindcss.com/3.4.0"></script>
-
-    <script>
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             document.querySelector("[data-root]").classList.remove("grid", "h-screen");
         }
@@ -63,7 +58,7 @@ READ HERE how to fully customize the messages shown to your members https://gith
         <div class="flex w-full max-w-2xl flex-col items-center px-6 text-center md:px-10 mt-32">
             <div class="h-9 text-xl mb-32">
                 <img id="serverIcon" hidden style="border-radius: 51%;height: 110px;width: 110px;margin-bottom:10px;"
-            src="https://avatars.githubusercontent.com/u/138615525?s=200&v=4">
+                    src="https://avatars.githubusercontent.com/u/138615525?s=200&v=4">
             </div>
             <div data-loader>
                 <div role="status">
@@ -115,10 +110,9 @@ READ HERE how to fully customize the messages shown to your members https://gith
             You can set vc-verify-success for a custom message after the member has verified
             -->
             <h2 data-server-content id="serverInstructions"
-            vc-invalid-domain="You must host this online, follow our instructions."
-            vc-captcha-require="This server requires a captcha. Click the captcha below to verify."
-            vc-verify-success="custom"
-            class="text-sm font-semibold"></h2>
+                vc-invalid-domain="You must host this online, follow our instructions."
+                vc-captcha-require="This server requires a captcha. Click the captcha below to verify."
+                vc-verify-success="custom" class="text-sm font-semibold"></h2>
 
             <!-- myWidget is for the captcha if you have that option enabled. It's recommended to not delete this element if you don't have to -->
             <div id="myWidget"></div>
@@ -144,8 +138,11 @@ READ HERE how to fully customize the messages shown to your members https://gith
 
         <footer class="rounded-lg">
             <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-                    Report abuse at <a class="text-red-500 animate-pulse" href="mailto:abuse@vaultcord.com">abuse@vaultcord.com</a> © <a class="text-red-500 animate-pulse" href="https://vaultcord.com" target="_blank">VaultCord.com</a> recovery bot
+                <span class="text-sm text-gray-300 sm:text-center">
+                    Report abuse at <a class="text-red-500 animate-pulse"
+                        href="mailto:abuse@vaultcord.com">abuse@vaultcord.com</a> © <a
+                        class="text-red-500 animate-pulse" href="https://vaultcord.com"
+                        target="_blank">VaultCord.com</a> recovery bot
                 </span>
             </div>
         </footer>

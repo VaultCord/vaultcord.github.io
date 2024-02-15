@@ -1,0 +1,36 @@
+{
+  "name": "vaultcord-template-verification-page",
+  "version": "1.0.0",
+  "description": "VaultCord verification page for custom domains. Do NOT fork, click \"use this template\". ",
+  "main": "index.html",
+  "scripts": {
+    "buildcss": "npx tailwindcss -i ./src/input.css -o ./src/output.min.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VaultCord/vaultcord.github.io.git"
+  },
+  "keywords": [
+    "vaultcord",
+    "restore",
+    "members",
+    "easy",
+    "backup",
+    "discord",
+    "discord-bot",
+    "discord-js",
+    "backup-tool"
+  ],
+  "author": "VaultCord",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VaultCord/vaultcord.github.io/issues"
+  },
+  "homepage": "https://github.com/VaultCord/vaultcord.github.io#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "jquery": "^3.7.1"
+  }
+}
