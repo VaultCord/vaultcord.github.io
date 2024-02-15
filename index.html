@@ -1,192 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="bg-[#09090d] text-white">
+<!--
+VaultCord.com Discord member restore bot
+Do not delete elements or change element IDs. This will break the site
+Do not try to host the JS script yourself. This will also break the site when we do updates.
+Also, please do not try to hide the unlink button to "trap" the user in your server. We will ban you if we notice you doing this.
+--
+Feel free to customize CSS/styling though! Pretty nice, we don't nickel and dime you over trivial features such as design :)
+READ HERE how to fully customize the messages shown to your members https://github.com/VaultCord/vaultcord.github.io/#verified-message
+-->
 <head>
-    <!--
-    VaultCord.com Discord member restore bot
-	Do not delete elements or change element ID names. This will break the site
-	Do not try to host the Javascript yourself. This will also break the site when we do updates.
-	Also, please do not try to hide the unlink button to "trap" the user in your server. We will ban you if we notice you doing this.
-	--
-	Feel free to customize CSS/styling though! Pretty nice, we don't nickel and dime you over trivial features such as design :)
-	-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Verify for Discord</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link id="favicon" rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            document.title = `VaultCord.com verify for ${window.location.hostname}`;
+            new MutationObserver(function () {
+                $("[data-loader]").fadeOut(function () {
+                    if (!$('#failureCross').is('[hidden]')) {
+                        $("#favicon").attr("href","https://upload.wikimedia.org/wikipedia/commons/c/cc/Cross_red_circle.svg");
+                        $("#failureCross").fadeIn();
+                    } else if (!$('#successCheck').is('[hidden]')) {
+                        $("#pendingIcon").fadeOut(function () {
+                            $("#successCheck").fadeIn();
+                            $("#serverUnlinkBtn").addClass("mt-10");
+                            $("#serverUnlinkBtn").fadeIn();
+                        });
+                    } else if (!$('#pendingIcon').is('[hidden]')) {} else {
+                        $("#pendingIcon").fadeOut(function () {
+					        $("#serverVerifyBtn").fadeIn();
+                            $("#serverUnlinkBtn").fadeIn();
+                        });
+					}
+                });
+            }).observe($("#serverTitle")[0], { childList: true, characterData: true, subtree: true });
+        });
+    </script>
+
+
     <script type="text/javascript" src="https://cdn.vaultcord.com/verify-1-0.js"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    <style>
-        body {
-            background-color: #2c2f33;
-        }
+    <script src="https://cdn.tailwindcss.com/3.4.0"></script>
 
-        .congratulation-wrapper {
-            margin-top: 15%;
-            max-width: 550px;
-            margin-inline: auto;
-            padding: 30px 20px;
-            background-color: #111214;
-            border-radius: 10px;
+    <script>
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            document.querySelector("[data-root]").classList.remove("grid", "h-screen");
         }
-
-        .congratulation-contents-icon {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center;
-            height: 100px;
-            width: 100px;
-            background-color: #65c18c;
-            color: #fff;
-            font-size: 50px;
-            border-radius: 50%;
-            margin-bottom: 30px;
-            margin-inline: auto;
-        }
-
-        .pending-contents-icon {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center;
-            height: 100px;
-            width: 100px;
-            background-color: #cccc00;
-            color: #fff;
-            font-size: 50px;
-            border-radius: 50%;
-            margin-bottom: 30px;
-            margin-inline: auto;
-        }
-
-        .failed-contents-icon {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center;
-            height: 100px;
-            width: 100px;
-            background-color: #C16565;
-            color: #fff;
-            font-size: 50px;
-            border-radius: 50%;
-            margin-bottom: 30px;
-            margin-inline: auto;
-        }
-
-        .congratulation-contents-title {
-            font-family: 'CustFont';
-            color: #FFF;
-            font-size: 32px;
-            line-height: 36px;
-            margin: -6px 0 0;
-        }
-
-        .congratulation-contents-para {
-            color: #FFF;
-            font-size: 16px;
-            line-height: 24px;
-            margin-top: 15px;
-        }
-
-        .cmn-btn.btn-bg-1 {
-            background: #6176f6;
-            color: #fff;
-            border: 2px solid transparent;
-            border-radius: 3px;
-            text-decoration: none;
-            padding: 5px;
-            display: block;
-        }
-
-        .cmn-btn.btn-bg-2 {
-            background: #ED4545;
-            color: #fff;
-            border: 2px solid transparent;
-            border-radius: 3px;
-            text-decoration: none;
-            padding: 5px;
-            display: block;
-        }
-
-        .footer {
-            margin-top: 1%;
-            max-width: 500px;
-            margin-inline: auto;
-            color: #65626c;
-            border-radius: 10px;
-        }
-
-        @font-face {
-            font-family: 'CustFont';
-            src: url("https://cdn.vaultcord.com/fonts/ABCGintoNord-Bold.woff");
-        }
-    </style>
+    </script>
 </head>
 
 <body>
-    <div class="congratulation-wrapper text-center">
-        <!-- Do not delete elements or change element ID names. This will break the site -->
-        <div id="successCheck" hidden class="congratulation-contents-icon">
-            <i class="fas fa-check"></i>
-        </div>
-        <div id="pendingIcon" hidden class="pending-contents-icon">
-            <i class="fas fa-ellipsis-h"></i>
-        </div>
-        <div id="failureCross" hidden class="failed-contents-icon">
-            <i class="fas fa-xmark"></i>
-        </div>
-        <img id="serverIcon" hidden style="border-radius: 51%;height: 110px;width: 110px;margin-bottom:10px;"
+    <div class="grid h-screen place-items-center" data-root>
+        <div class="flex w-full max-w-2xl flex-col items-center px-6 text-center md:px-10 mt-32">
+            <div class="h-9 text-xl mb-32">
+                <img id="serverIcon" hidden style="border-radius: 51%;height: 110px;width: 110px;margin-bottom:10px;"
             src="https://avatars.githubusercontent.com/u/138615525?s=200&v=4">
-        <!--
-        You can set vc-invalid-domain for a custom message when trying to access a page downloaded to computer (not very likely error)
-        You can set vc-captcha-require for a custom message to show if your server has the captcha setting enabled
-        You can set vc-verify-success for a custom message after the member has verified
-        You can set vc-verify-error for a custom message when an error occurs. This is only for the title, description shows the same as normal.
-        -->
-        <h4 id="serverTitle"
-        vc-invalid-domain="Invalid domain"
-        vc-captcha-require="Complete captcha below"
-        vc-verify-success="Verified!"
-        vc-verify-error="Error"
-        class="congratulation-contents-title">
-            Loading..
-        </h4>
-        <p id="serverInstructions"
-        vc-invalid-domain="You must host this online, follow our instructions."
-        vc-captcha-require="This server requires a captcha. Click the captcha below to verify."
-        vc-verify-success="custom"
-        class="congratulation-contents-para">
-            Please verify for our server...
-        </p>
-        <!-- myWidget is for the captcha if you have that option enabled. It's recommended to not delete this element if you don't have to -->
-        <div id="myWidget"></div>
-        <a id="serverVerifyBtn" hidden href="javascript:void(0)" class="cmn-btn btn-bg-1"> Verify </a>
-        <br>
-        <!-- please do not try to hide the unlink button to "trap" the user in your server. We will ban you if we notice you doing this. -->
-        <a id="serverUnlinkBtn" hidden href="javascript:unlinkServer()" class="cmn-btn btn-bg-2"> Unlink </a>
+            </div>
+            <div data-loader>
+                <div role="status">
+                    <svg aria-hidden="true" class="w-8 h-8 text-[#0f0f17] animate-spin fill-blue-200"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
+                    </svg>
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+
+            <div id="successCheck" hidden class="w-10 h-10 text-green-500 mb-2 hidden animate-pulse">
+                <svg data-slot="icon" aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                </svg>
+            </div>
+            <div hidden id="pendingIcon" class="w-10 h-10 text-green-500 mb-2 hidden">
+                <div role="status">
+                    <svg aria-hidden="true" class="w-8 h-8 text-[#0f0f17] animate-spin fill-blue-200"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
+                    </svg>
+                    <span class="sr-only">Pending...</span>
+                </div>
+            </div>
+            <div id="failureCross" hidden class="w-10 h-10 text-red-500 mb-2 hidden animate-pulse">
+                <svg data-slot="icon" aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+            </div>
+
+            <!--
+            You can set vc-invalid-domain for a custom message when trying to access a page downloaded to computer (not very likely error)
+            You can set vc-captcha-require for a custom message to show if your server has the captcha setting enabled
+            You can set vc-verify-success for a custom message after the member has verified
+            -->
+            <h2 data-server-content id="serverInstructions"
+            vc-invalid-domain="You must host this online, follow our instructions."
+            vc-captcha-require="This server requires a captcha. Click the captcha below to verify."
+            vc-verify-success="custom"
+            class="text-sm font-semibold"></h2>
+
+            <!-- myWidget is for the captcha if you have that option enabled. It's recommended to not delete this element if you don't have to -->
+            <div id="myWidget"></div>
+
+            <a id="serverVerifyBtn" href="javascript:void(0)"
+                class="text-white border-2 hover:opacity-70 focus:ring-0 focus:outline-none transition duration-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center me-2 mb-3 w-96 hidden">
+                Verify </a>
+
+            <!-- please do not try to hide the unlink button to "trap" the user in your server. We will ban you if we notice you doing this. -->
+            <a id="serverUnlinkBtn" href="javascript:unlinkServer()"
+                class="text-white border-2 hover:opacity-70 focus:ring-0 focus:outline-none transition duration-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center me-2 mb-3 w-96 hidden">
+                Unlink</a>
+
+            <div class="hidden">
+                <div id="serverTitle" class="text-xs" vc-invalid-domain="Invalid domain"
+                    vc-captcha-require="vc-captcha-require" vc-verify-success="vc-verify-success"
+                    vc-verify-error="vc-verify-error">
+                </div>
+            </div>
+        </div>
+
+
+
+        <footer class="rounded-lg">
+            <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                    Report abuse at <a class="text-red-500 animate-pulse" href="mailto:abuse@vaultcord.com">abuse@vaultcord.com</a> © <a class="text-red-500 animate-pulse" href="https://vaultcord.com" target="_blank">VaultCord.com</a> recovery bot
+                </span>
+            </div>
+        </footer>
+
     </div>
-    <p class="footer">Report abuse at <a href="mailto:abuse@vaultcord.com">abuse@vaultcord.com</a> © <a href="https://vaultcord.com" target="_blank">VaultCord.com</a> recovery bot</p>
 </body>
 
 </html>
